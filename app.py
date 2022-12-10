@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 from api.api import api_bp
-from utils import load_posts, load_post_by_pk, load_post_by_word, load_post_by_name
+from utils import load_posts, load_post_by_pk, load_post_by_word, load_post_by_name, load_comments
 
 app = Flask(__name__)
 
@@ -17,7 +17,8 @@ def view_main():
 @app.route("/post/<int:pk>")
 def view_post(pk):
     post = load_post_by_pk(pk)
-    return render_template('post.html', post=post)
+    comments = load_comments(pk)
+    return render_template('post.html', post=post, comments=comments)
 
 
 @app.route("/search/", methods=["GET"])
@@ -32,4 +33,10 @@ def view_user(user_name):
     return render_template('user-feed.html', posts=posts)
 
 
-app.run(debug=True)
+@app.errorhandler(404)
+def error_404(e):
+    return "Такой страницы нет, вернитесь на главную страницу"
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

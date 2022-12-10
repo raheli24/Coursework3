@@ -1,0 +1,4 @@
+/venv/
+/x.log
+/.pytest_cache/
+/Lib/

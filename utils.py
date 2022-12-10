@@ -10,8 +10,20 @@ def load_json(file_name):
 
 def load_posts():
     data = load_json("data/posts.json")
+    for post in data:
+        post['short'] = " ".join(post['content'].split(' ')[:12])
 
     return data
+
+
+def load_comments(post_id):
+    data = load_json("data/comments.json")
+    comments_filtered = []
+
+    for comment in data:
+        if comment['post_id'] == post_id:
+            comments_filtered.append(comment)
+    return comments_filtered
 
 
 def load_post_by_pk(pk):
